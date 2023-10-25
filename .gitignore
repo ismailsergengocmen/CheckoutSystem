@@ -1,0 +1,9 @@
+*.class
+
+HELP.md
+target/
+!*/src/main/*/target/
+!*/src/test/*/target/
+
+.idea/
+.mvn
