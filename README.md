@@ -1,3 +1,6 @@
+# Requirements
+Please check "Requirements.pdf" or "Requirements.txt" for the requirements.
+
 # Build
 - docker build -t springboot-mongo .
 - docker-compose up

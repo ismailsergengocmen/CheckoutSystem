@@ -1,0 +1,152 @@
+﻿CHECKOUT SYSTEM REQUIREMENTS
+
+
+Cart
+A container that holds all items. All items belong to the Cart set. A maximum of 10 unique items (excluding VasItems) can be in a cart. The total number of products cannot exceed 30. The total value of the Cart cannot exceed 500,000 TL.
+
+
+Item
+Products found in the Cart. Items can be added to or removed from the Cart. Items in the Cart can be reset. Items can come in multiple types, such as VasItem, DefaultItem, DigitalItem, etc. Multiple quantities of an item can be added. Each item's price is determined differently and is provided as input to the application. Items in the Cart have seller and category IDs.
+
+
+DigitalItem
+Only digital items can be added to a Cart marked as DigitalItem. Digital items can include things like Steam cards, donation cards, etc. A maximum of 5 DigitalItems can be added. Items with a CategoryID of 7889 are defined as DigitalItems, and no other item type can be defined with this CategoryID.
+
+
+DefaultItem
+Default items are traditional products used in e-commerce, such as T-shirts, cell phones, detergents, etc. The price of VasItems added to a DefaultItem cannot be higher than the price of the DefaultItem.
+
+
+VasItem
+Value Added Service items represent services like insurance, assembly, etc. These products do not represent a physical product but a service related to a specific product and do not have meaning on their own. Therefore, they can only be added as sub-items to default items in the Furniture (CategoryID: 1001) and Electronics (CategoryID: 3004) categories. A maximum of 3 VasItems can be added to a DefaultItem. The CategoryID of VasItems is 3242, and the seller ID is 5003. VasItems that do not have a seller ID of 5003 cannot be defined. There is no other type of item with a seller ID of 5003.
+
+
+Promotion
+An entity that applies discounts to specific items or the entire Cart.
+
+
+SameSellerPromotion
+SameSellerPromotion has an ID of 9909. If the sellers of the items in the Cart are the same (excluding VasItems), a 10% discount is applied to the Cart's total value.
+
+
+CategoryPromotion
+CategoryPromotion has an ID of 5676. A 5% discounted promotion is defined for items on the Cart with a CategoryID of 3003, and it is applied to the Cart's total value.
+
+
+TotalPricePromotion
+TotalPricePromotion has an ID of 1232. If the Cart's price is less than 5,000 TL (excluding 5,000), a discount of 250 TL is applied. If it's between 5,000 TL and 10,000 TL (excluding 10,000), a discount of 500 TL is applied. If it's between 10,000 TL and 50,000 TL (excluding 50,000), a discount of 1,000 TL is applied. If it's 50,000 TL or more, a discount of 2,000 TL is applied. Multiple promotions are not applied to a Cart. If there are multiple promotions for a Cart, the most advantageous promotion for the customer is applied, which is the one that provides the highest total discount regardless of the type.
+
+
+
+
+Input/Output
+
+
+Below, the REST input and output for your application are shown.
+
+
+Action 1 - Add Item
+Input:
+
+
+{
+  "itemId": int,
+  "categoryId": int,
+  "sellerId": int,
+  "price": double,
+  "quantity": int
+}
+
+
+Output:
+{
+  "result": boolean,
+  "message": string
+}
+
+
+Action 2 - Add VasItem to Item
+
+
+Input:
+{
+  "itemId": int,
+  "vasItemId": int,
+  "categoryId": int,
+  "sellerId": int,
+  "price": double,
+  "quantity": int
+}
+
+
+Output:
+{
+  "result": boolean,
+  "message": string
+}
+
+
+Action 3 - Remove Item
+Input:
+
+
+{
+  "itemId": int
+}
+
+
+Output:
+
+
+{
+  "result": boolean,
+  "message": string
+}
+Action 4 - Reset Cart
+Output:
+
+
+{
+  "result": boolean,
+  "message": string
+}
+
+
+Action 5 - Display Cart
+Output:
+
+
+{
+  "result": boolean,
+  "message": {
+    "items": [ty.item],
+    "totalPrice": double,
+    "appliedPromotionId": int,
+    "totalDiscount": double
+  }
+}
+
+
+ty.item ->
+
+
+{
+  "itemId": int,
+  "categoryId": int,
+  "sellerId": int,
+  "price": double,
+  "quantity": int,
+  "vasItems": [ty.vasItem]
+}
+
+
+ty.vasItem ->
+
+
+{
+  "vasItemId": int,
+  "categoryId": int,
+  "sellerId": int,
+  "price": double,
+  "quantity": int
+}
